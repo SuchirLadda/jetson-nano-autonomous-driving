@@ -1,0 +1,8 @@
+build/
+devel/
+logs/
+*.bag
+*.pyc
+__pycache__/
+.DS_Store
+.catkin_workspace
