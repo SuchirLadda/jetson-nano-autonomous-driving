@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Launch the occupancy grid mapping node -->
+    <node pkg="f1tenth_simulator" name="occupancygridmap" type="occupancygridmap.py" output="screen">
+        <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
+    </node>
+</launch>
+
+

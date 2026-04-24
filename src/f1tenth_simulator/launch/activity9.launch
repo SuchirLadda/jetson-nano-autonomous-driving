@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Listen to messages from joysicks -->
+  <node pkg="joy" name="joy_node" type="joy_node">
+  <param name="autorepeat_rate" value="2"/>
+  </node>
+
+  <!-- launch vesc driver node -->
+  <node pkg="vesc_driver" name="vesc_driver_node" type="vesc_driver_node">
+  <param name="port" value="/dev/sensors/vesc" />
+  <param name="serial_baudrate"     type="int"    value="115200"/>
+  </node>
+
+  <!--  launch rplidar driver node-->
+  <node pkg="rplidar_ros" name="rplidarNode" type="rplidarNode">
+  <param name="port" value="/dev/sensors/rplidar" />
+  <param name="frame_id" type="string" value="laser"/>
+  <param name="inverted"  type="bool"   value="false"/>
+  <param name="angle_compensate"  type="bool"   value="true"/>
+   <param name="scan_mode"   type="string" value="Boost"/>
+  <remap from="scan" to="scan2"/>
+  </node>
+  
+    <!--  launch IMU driver node -->
+  <node ns="imu" name="imu_node" pkg="imu_bno055" type="bno055_i2c_node" respawn="true" respawn_delay="2">
+     <param name="device" type="string" value="/dev/i2c-1"/>
+     <param name="address" type="int" value="40"/> <!-- 0x28 == 40 is the default for c -->
+     <param name="frame_id" type="string" value="imu"/>
+    </node>
+
+# Complete the missing parts in the homogenous transformations below (Activity #1)
+
+ <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu" 
+        args="0.01286 0 0.06119 1.50708 0 0 base_link imu" />
+
+ <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" 
+        args="0.01286 0 0.076 -3.1416 0 0 base_link laser" />
+
+<node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_camera" 
+        args="0.292 0 0.086 -1.5708 0 -1.5708 base_link camera_link" />
+
+
+  <!-- Launch the mux node with the parameters from params.yaml -->
+  <node pkg="f1tenth_simulator" name="mux_controller" type="mux" output="screen">
+    <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
+  </node>
+
+
+  <node pkg="f1tenth_simulator" name="racecar_experiment" type="experiment" output="screen">
+    <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
+  </node>
+
+  <!-- Launch the behavior controller node with the parameters from params.yaml -->
+  <node pkg="f1tenth_simulator" name="behavior_controller" type="behavior_controller" output="screen">
+    <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
+  </node>
+
+
+  <!-- Launch the Keyboard Node -->
+  <node pkg="f1tenth_simulator" name="keyboard" type="keyboard" output="screen">
+    <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
+  </node>
+
+
+	<!-- Launch the occupancy grid mapping node -->
+    <node pkg="f1tenth_simulator" name="occupancygridmap" type="occupancygridmap.py" output="screen">
+        <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
+    </node>
+
+  
+  </launch>

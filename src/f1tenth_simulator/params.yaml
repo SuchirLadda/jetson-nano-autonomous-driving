@@ -1,0 +1,261 @@
+# The distance between the front and
+# rear axle of the racecar
+wheelbase: 0.287 # meters
+# width of racecar
+width: 0.342 # meters
+
+# steering delay
+buffer_length: 5
+
+# Limits on the speed and steering angle
+max_speed: 1.0 #  meters/second
+max_steering_angle: 0.4189 # radians
+max_accel: 2.5 #7.51 # meters/second^2
+max_decel: 2.5 #8.26 # meters/second^2
+max_steering_vel: 3.2 # radians/second
+friction_coeff: 0.523 # - (complete estimate)
+height_cg: 0.074 # m (roughly measured to be 3.25 in)
+l_cg2rear: 0.17145 # m (decently measured to be 6.75 in)
+l_cg2front: 0.15875 # m (decently measured to be 6.25 in)
+C_S_front: 4.718 #.79 # 1/rad ? (estimated weight/4)
+C_S_rear: 5.4562 #.79 # 1/rad ? (estimated weight/4)
+mass: 3.47 # kg (measured on car 'lidart')
+moment_inertia: .04712 # kg m^2 (estimated as a rectangle with width and height of car and evenly distributed mass, then shifted to account for center of mass location)
+
+# The rate at which the pose and the lidar publish
+update_pose_rate: 0.01
+
+# Lidar simulation parameters
+scan_beams: 720
+scan_field_of_view: 6.2831853 #4.71 # radians
+scan_range: 12.0
+
+# The distance from the center of the
+# rear axis (base_link) to the lidar
+scan_distance_to_base_link: 0.01286 # meters
+
+# The standard deviation of the noise applied
+# to the lidar simulation
+scan_std_dev: 0.01 # meters
+
+# The probability threshold for points
+# in the occupancy grid to be considered "free".
+# Used for the lidar simulator.
+map_free_threshold: 0.8
+
+# Time to collision cutoff value
+ttc_threshold: 0.01
+
+# Indices for mux controller
+mux_size: 6
+joy_mux_idx: 0
+key_mux_idx: 1
+random_walker_mux_idx: 2
+brake_mux_idx: 3
+nav_mux_idx: 4
+# **Add index for new planning method here**
+# **(increase mux_size accordingly)**
+new_method_mux_idx: -1
+collision_assistance_mux_idx: 5
+
+# Enables joystick if true
+joy: true
+# Joystick indices
+joy_speed_axis: 1
+joy_angle_axis: 3
+joy_max_speed: 1 #2. # meters/second
+# Joystick indices for toggling mux
+joy_button_idx: 4  # LB button
+key_button_idx: 6 # not sure 
+brake_button_idx: 0 # A button
+random_walk_button_idx: 1 # ? button
+nav_button_idx: 5 # RB button
+collision_assistance_button_idx: 2 # X button
+# **Add button for new planning method here**
+new_button_idx: -1
+
+# Keyboard characters for toggling mux
+joy_key_char: "j"
+keyboard_key_char: "k"
+brake_key_char: "b"
+random_walk_key_char: "r"
+nav_key_char: "n"
+# **Add button for new planning method here**
+new_key_char: "z"
+
+# Keyboard driving params
+keyboard_speed: 1.8  # meters/second
+keyboard_steer_ang: .3  # radians
+
+# obstacle parameters
+obstacle_size: 2
+
+# The names of topics to listen and publish to
+joy_topic: "/joy"
+drive_topic: "/drive"
+map_topic: "/map"
+distance_transform_topic: "/dt"
+scan_topic: "/scan"
+pose_topic: "/pose"
+ground_truth_pose_topic: "/gt_pose"
+odom_topic: "/odom"
+imu_topic: "/imu/data"
+pose_rviz_topic: "/initialpose"
+keyboard_topic: "/key"
+brake_bool_topic: "/brake_bool"
+mux_topic: "/mux"
+
+# Topic names of various drive channels
+rand_drive_topic: "/rand_drive"
+brake_drive_topic: "/brake"
+nav_drive_topic: "/nav"
+# **Add name for new planning method here**
+new_drive_topic: "/new_drive"
+collision_assistance_drive_topic: "/collision_assistance"
+
+# name of file to write collision log to 
+collision_file: "collision_file"
+
+# The names of the transformation frames published to
+map_frame: "map"
+base_frame: "base_link"
+base_frame_imu: "base_link_imu"
+scan_frame: "laser"
+odom_frame: "odom"
+
+broadcast_transform: true
+publish_ground_truth_pose: true
+
+
+# Ackermann to VESC parameters
+
+speed_to_erpm_gain: 3182.18
+speed_to_erpm_offset: 0.0
+steering_angle_to_servo_gain: -1.0647
+steering_angle_to_servo_offset: 0.5000
+
+driver_smoother_rate: 75.0 # messages/sec
+
+
+# Collision Assistance Algorithm Parameters
+
+distance_to_obstacle_th:  1.0
+force_gain: 8.0
+velocity_correction_gain: 0.6
+steering_correction_gain: 0.6
+emergency_brake_active: true
+
+# Wall Following Algorithm Parameters
+
+CenterOffset: 0
+DistanceLeft: 0.9
+DistanceRight: 0.9
+TrackWall: 0
+
+angle_bl_deg: 285.0
+angle_al_deg: 275.0
+angle_br_deg: 105.0
+angle_ar_deg: 115.0
+
+delta_theta_deg: 11.25
+d_stop: 0.45
+d_tau: 1.0
+delta_max: 0.41
+
+n_pts_l: 50 #change to 5
+n_pts_r: 50 #change to 5
+tau: 0.1
+k_d: 4
+k_p: 6
+vehicle_velocity: 1.0
+turn_velocity: 0.8
+velocity_zero: 0.3
+# Gap Following Algorithm Parameters
+
+safe_distance: 2.0
+right_beam_angle: rad(2*pi*4.0/16)
+left_beam_angle: rad(2*pi*12.0/16)
+turn_angle1: rad(pi/6)
+turn_angle2: rad(pi/3)
+stop_time1: 1.0
+stop_time2: 1.0
+# Speed control paramteres
+heading_beam_angle: rad(pi/16)
+stop_distance: 0.6 #m
+stop_distance_decay: 1.0 #m
+
+# Separating Barrier Line Optimization Mode: 0 (indepndent) 1 (parallel) 
+optim_mode: 0  
+
+# Experiment
+speed_to_erpm_gain:  3182.18 #3750.0
+speed_to_erpm_offset: 0.0
+steering_angle_to_servo_gain: -1.017301954
+steering_angle_to_servo_offset: 0.4600
+
+driver_smoother_rate: 75.0 # messages/sec
+
+# Occupancy grid map parameters
+occ_map_topic: "map_occ"
+p_occ: 0.90
+p_free: 0.1
+map_width: 120
+map_height: 120
+map_res: 0.15 #m
+object_size: .05 #m
+
+p_occ_thresh: 0.65
+p_free_thresh: 0.35
+
+fov_angle_deg: 80.0
+barrier_bl_deg: 280.0
+barrier_al_deg: 220.0
+barrier_br_deg: 100.0
+barrier_ar_deg: 160.0
+
+# ===== CAMERA BONUS =====
+
+use_camera: 1
+camera_info: "/camera/depth/camera_info"
+img_raw: "/camera/depth/image_rect_raw"
+
+# Depth range in millimeters (RealSense depth is usually uint16 in mm)
+min_depth: 100
+max_depth: 5000
+
+# Region of interest in the depth image
+roi_u_lower: 250
+roi_u_upper: 548
+roi_v_lower: 150
+roi_v_upper: 470
+
+# Subsample the ROI to reduce computation
+# Larger stride = less computation, less detail
+
+depth_u_stride: 4
+depth_v_stride: 4
+
+# Camera extrinsics relative to base_link
+# Units: meters for translation, degrees for rotation
+cam_tx: 0.292
+cam_ty: 0.0
+cam_tz: 0.086
+cam_roll_deg: 90.0
+cam_pitch_deg: 90.0
+cam_yaw_deg: 0.0
+
+# Collision-relevant 3D zone in base_link frame
+# base_link assumed as x forward, y left, z up
+# z_base_min helps reject ground points
+x_base_min: 0.05
+x_base_max: 2.5
+y_base_min: -0.60
+y_base_max: 0.60
+z_base_min: 0.03
+z_base_max: 0.60
+
+# How long to keep the latest camera points when fusing with LiDAR
+camera_hold_time: 0.25
+
+# Small safety padding
+camera_range_padding: 0.03
